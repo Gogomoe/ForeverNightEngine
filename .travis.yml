@@ -1,0 +1,14 @@
+language: java
+
+jdk:
+- oraclejdk8
+
+before_install:
+ - chmod +x gradlew
+
+after_success:
+- ./gradlew jacocoTestReport coveralls
+
+env:
+  global:
+    - COVERALLS_REPO_TOKEN=TAGluUbXdCdDqORjqCn7acBX9IfGzY3R6
