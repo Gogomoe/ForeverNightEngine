@@ -8,7 +8,7 @@ import moe.gogo.test.TestStatus
 class SubscriberTest : StringSpec() {
 
     init {
-        "should receive event"{
+        "receive event"{
             val (subscriber, status) = createSubscriberAndStatus<String>()
             subscriber.subscribe {
                 status.next()
@@ -17,7 +17,7 @@ class SubscriberTest : StringSpec() {
             subscriber.emit(Gen.string().generate())
             status shouldBe 1
         }
-        "should receive correct args"{
+        "receive correct args"{
             val subscriber = createSubscriber<String>()
             var arg = ""
             subscriber.subscribe {
@@ -28,7 +28,7 @@ class SubscriberTest : StringSpec() {
                 subscriber.emit(arg)
             }
         }
-        "should remove subscriber"{
+        "remove subscriber"{
             val (subscriber, status) = createSubscriberAndStatus<String>()
             var observer: Observer<String> = Observer { }
             observer = subscriber.subscribe {

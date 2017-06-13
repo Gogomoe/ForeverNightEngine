@@ -8,11 +8,11 @@ import moe.gogo.test.TestStatus
 
 class EventDispenserTest : StringSpec() {
     init {
-        "should dispense events without any observer"{
+        "dispense events without any observer"{
             val dispenser = createEventDispenser()
             dispenser.emit(Gen.string().generate())
         }
-        "should receive events"{
+        "receive events"{
             val (dispenser, status) = createEventDispenserAndStatus()
             dispenser.subscribe<String> { status.next() }
             dispenser.subscribe(Number::class) { status.next(5) }
@@ -25,7 +25,7 @@ class EventDispenserTest : StringSpec() {
             // 2 (String) + 5 (Number) + 10 (Int)
             status shouldBe 17
         }
-        "should only the current class receive events"{
+        "only observer of current class could receive events"{
             val (dispenser, status) = createEventDispenserAndStatus()
             dispenser.subscribe(Number::class) { status.next(5) }
             dispenser.subscribe(Int::class, Observer { status.next(10) })
@@ -34,7 +34,7 @@ class EventDispenserTest : StringSpec() {
 
             status shouldBe 10
         }
-        "should receive correct args"{
+        "receive correct args"{
             val dispenser = createEventDispenser()
             var arg = ""
             dispenser.subscribe<String> {
@@ -45,7 +45,7 @@ class EventDispenserTest : StringSpec() {
                 dispenser.emit(arg)
             }
         }
-        "should remove subscriber"{
+        "remove subscriber"{
             val (dispenser, status) = createEventDispenserAndStatus()
             var observer: Observer<String> = Observer { }
             observer = dispenser.subscribe {
