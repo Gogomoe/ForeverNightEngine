@@ -20,3 +20,5 @@ class Subscriber<T> {
     }
 
 }
+
+fun Subscriber<Unit>.emit() = this.emit(Unit)

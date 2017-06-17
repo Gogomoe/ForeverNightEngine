@@ -42,6 +42,14 @@ class SubscriberTest : StringSpec() {
             }
             status shouldBe 5
         }
+        "no-params subscriber"{
+            val (subscriber, status) = createSubscriberAndStatus<Unit>()
+            subscriber.subscribe {
+                status.next()
+            }
+            subscriber.emit()
+            status shouldBe 1
+        }
     }
 
     fun <T> createSubscriberAndStatus() = Pair(Subscriber<T>(), TestStatus())
