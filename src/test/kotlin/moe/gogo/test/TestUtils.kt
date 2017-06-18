@@ -6,7 +6,11 @@ import io.kotlintest.matchers.shouldBe
 import moe.gogo.game.utils.equal
 
 fun <E> `in`(collection: Collection<E>) = object : Matcher<E> {
-    override fun test(value: E) = Result(value in collection, " $value should in the collection $collection")
+    override fun test(value: E) = Result(value in collection, "$value should in the collection $collection")
+}
+
+fun bigger(number: Number) = object : Matcher<Number> {
+    override fun test(value: Number) = Result(value.toDouble() > number.toDouble(), "$value should bigger than $number")
 }
 
 fun equal(target: Float) = object : Matcher<Float> {
