@@ -27,11 +27,6 @@ open class SetContainer(open val self: Container) : Container {
     val children: MutableSet<FObject> = mutableSetOf()
 
     override fun add(obj: FObject): Boolean {
-        if (obj.parent == self) {
-            return true
-        }
-        obj.parent?.remove(obj)
-        obj.parent = self
         return children.add(obj)
     }
 
@@ -45,23 +40,31 @@ open class SetContainer(open val self: Container) : Container {
 }
 
 /**
- * 用于 FObject 的Container，会在添加或移除元素时，更新该元素的相对位置
+ * 用于 FObject 的Container，会在添加或移除元素时，更新该元素的相对位置，保持绝对位置不变
  */
 class ObjectContainer(override val self: FObject) : SetContainer(self) {
 
     override fun add(obj: FObject): Boolean {
-        updateRelativePosition(obj)
+        if (obj.parent == self) {
+            return true
+        }
+        updatePosition(obj) {
+            obj.parent?.remove(obj)
+            obj.parent = self
+        }
         return super.add(obj)
     }
 
-    private fun updateRelativePosition(obj: FObject) {
-        val relative = obj.absolutePosition.point.toVector() - self.absolutePosition.point.toVector()
-        obj.position.point = relative.toPoint()
+    override fun remove(obj: FObject): Boolean {
+        updatePosition(obj) {
+            obj.parent = null
+        }
+        return super.remove(obj)
     }
 
-    override fun remove(obj: FObject): Boolean {
-        // update relative position to absolute position
-        obj.position.point = obj.absolutePosition.point
-        return super.remove(obj)
+    private inline fun updatePosition(obj: FObject, body: () -> Unit) {
+        val absolutePosition = obj.absolutePosition.point
+        body()
+        obj.absolutePosition.point = absolutePosition
     }
 }

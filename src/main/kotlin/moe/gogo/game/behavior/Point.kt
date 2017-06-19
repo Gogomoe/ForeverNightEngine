@@ -8,6 +8,8 @@ class Point(val x: Float, val y: Float) {
 
     operator fun plus(v: Vector): Point = Point(x + v.x, y + v.y)
 
+    operator fun minus(v: Vector): Point = Point(x - v.x, y - v.y)
+
     fun toVector(): Vector = Vector(x, y)
 
     override fun equals(other: Any?): Boolean = when (other) {

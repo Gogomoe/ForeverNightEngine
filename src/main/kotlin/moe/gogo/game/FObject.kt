@@ -1,5 +1,6 @@
 package moe.gogo.game
 
+import moe.gogo.game.behavior.AbsolutePositionBehavior
 import moe.gogo.game.behavior.CollideBehavior
 import moe.gogo.game.behavior.CollideBox
 import moe.gogo.game.behavior.Container
@@ -22,7 +23,7 @@ abstract class FObject : Container, CollideBox, Renderer {
     /**
      * Container
      */
-    var parent: Container? = null
+    var parent: FObject? = null
 
     var container: Container
             by lazyVar {
@@ -45,7 +46,7 @@ abstract class FObject : Container, CollideBox, Renderer {
      * absolutePosition 表示的是在场景中的绝对位置
      * @see position
      */
-    val absolutePosition: PositionBehavior = PositionBehavior()
+    val absolutePosition: PositionBehavior = AbsolutePositionBehavior(this)
 
     /**
      * CollideBox
