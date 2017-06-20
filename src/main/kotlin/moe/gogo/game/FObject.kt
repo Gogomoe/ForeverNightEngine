@@ -40,13 +40,13 @@ abstract class FObject : Container, CollideBox, Renderer {
      * position 表示的是该对象相对于 [parent] 对象的相对位置
      * @see absolutePosition
      */
-    val position: PositionBehavior = PositionBehavior()
+    open var position: Point by PositionBehavior()
 
     /**
      * absolutePosition 表示的是在场景中的绝对位置
      * @see position
      */
-    val absolutePosition: PositionBehavior = AbsolutePositionBehavior(this)
+    open var absolutePosition: Point by AbsolutePositionBehavior()
 
     /**
      * CollideBox

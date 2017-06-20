@@ -5,7 +5,10 @@ import io.kotlintest.matchers.shouldBe
 import io.kotlintest.matchers.shouldNotBe
 import io.kotlintest.properties.Gen
 import io.kotlintest.specs.StringSpec
+import moe.gogo.game.utils.equal
 import moe.gogo.test.equal
+import moe.gogo.test.generateXY
+import moe.gogo.test.notEqual
 import java.lang.Math.pow
 import java.lang.Math.sqrt
 
@@ -22,7 +25,9 @@ class VectorTest : StringSpec() {
             (1..10).forEach {
                 val (x1, y1) = generateXY()
                 val (x2, y2) = generateXY()
-                Vector(x1, y1) shouldNotBe Vector(x2, y2)
+                if (notEqual(x1, x2, y1, y2)) {
+                    Vector(x1, y1) shouldNotBe Vector(x2, y2)
+                }
             }
         }
         "vector should equal although have a little difference"{
@@ -67,6 +72,5 @@ class VectorTest : StringSpec() {
     }
 
 
-    fun generateXY() = Pair(Gen.float().generate(), Gen.float().generate())
 }
 

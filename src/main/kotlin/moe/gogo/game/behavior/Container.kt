@@ -63,8 +63,8 @@ class ObjectContainer(override val self: FObject) : SetContainer(self) {
     }
 
     private inline fun updatePosition(obj: FObject, body: () -> Unit) {
-        val absolutePosition = obj.absolutePosition.point
+        val absolutePosition = obj.absolutePosition
         body()
-        obj.absolutePosition.point = absolutePosition
+        obj.absolutePosition = absolutePosition
     }
 }

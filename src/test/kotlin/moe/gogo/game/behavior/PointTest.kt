@@ -2,8 +2,9 @@ package moe.gogo.game.behavior
 
 import io.kotlintest.matchers.shouldBe
 import io.kotlintest.matchers.shouldNotBe
-import io.kotlintest.properties.Gen
 import io.kotlintest.specs.StringSpec
+import moe.gogo.test.generateXY
+import moe.gogo.test.notEqual
 
 class PointTest : StringSpec() {
 
@@ -18,7 +19,9 @@ class PointTest : StringSpec() {
             (1..10).forEach {
                 val (x1, y1) = generateXY()
                 val (x2, y2) = generateXY()
-                Point(x1, y1) shouldNotBe Point(x2, y2)
+                if (notEqual(x1, x2, y1, y2)) {
+                    Point(x1, y1) shouldNotBe Point(x2, y2)
+                }
             }
         }
         "point should equal although have a little difference"{
@@ -42,5 +45,4 @@ class PointTest : StringSpec() {
         }
     }
 
-    fun generateXY() = Pair(Gen.float().generate(), Gen.float().generate())
 }
