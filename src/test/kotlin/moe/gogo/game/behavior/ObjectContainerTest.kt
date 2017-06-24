@@ -23,6 +23,17 @@ class ObjectContainerTest : StringSpec() {
             child should `in`(obj.children())
             child.parent shouldBe obj
         }
+        "add object repeatedly"{
+            val (obj, container) = createObjectAndContainer()
+            val child = createEmptyObject()
+
+            container.add(child)
+            container.add(child)
+            container.add(child)
+
+            container.children().size shouldBe 1
+            child should `in`(container.children())
+        }
         "remove objet"{
             val (obj, container) = createObjectAndContainer()
             val child = createEmptyObject()

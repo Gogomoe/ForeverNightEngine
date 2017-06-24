@@ -5,7 +5,6 @@ import io.kotlintest.matchers.shouldBe
 import io.kotlintest.matchers.shouldNotBe
 import io.kotlintest.properties.Gen
 import io.kotlintest.specs.StringSpec
-import moe.gogo.game.utils.equal
 import moe.gogo.test.equal
 import moe.gogo.test.generateXY
 import moe.gogo.test.notEqual
@@ -19,9 +18,13 @@ class VectorTest : StringSpec() {
             (1..10).forEach {
                 val (x1, y1) = generateXY()
                 Vector(x1, y1) shouldBe Vector(x1, y1)
+                Vector(x1, y1).hashCode() shouldBe Vector(x1, y1).hashCode()
             }
         }
         "vector should not equal"{
+            val (x, y) = generateXY()
+            Vector(x, y) shouldNotBe Object()
+            Vector(x, y) shouldNotBe Point(x, y)
             (1..10).forEach {
                 val (x1, y1) = generateXY()
                 val (x2, y2) = generateXY()

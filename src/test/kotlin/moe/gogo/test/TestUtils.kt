@@ -17,6 +17,10 @@ fun equal(target: Float) = object : Matcher<Float> {
     override fun test(value: Float) = Result(target equal value, "$value should equal $target")
 }
 
+fun equal(target: Number) = object : Matcher<Number> {
+    override fun test(value: Number) = Result(target equal value, "$value should equal $target")
+}
+
 class TestStatus {
     var value: Int = 0
     fun next(step: Int = 1) {

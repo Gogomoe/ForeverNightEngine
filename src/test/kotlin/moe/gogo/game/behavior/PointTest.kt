@@ -13,9 +13,13 @@ class PointTest : StringSpec() {
             (1..10).forEach {
                 val (x1, y1) = generateXY()
                 Point(x1, y1) shouldBe Point(x1, y1)
+                Point(x1, y1).hashCode() shouldBe Point(x1, y1).hashCode()
             }
         }
         "point should not equal"{
+            val (x, y) = generateXY()
+            Point(x, y) shouldNotBe Object()
+            Point(x, y) shouldNotBe Vector(x, y)
             (1..10).forEach {
                 val (x1, y1) = generateXY()
                 val (x2, y2) = generateXY()
