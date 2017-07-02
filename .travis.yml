@@ -1,13 +1,16 @@
-language: java
+language: kotlin
 
 jdk:
-- oraclejdk8
+  - oraclejdk8
 
 before_install:
- - chmod +x gradlew
+  - chmod +x gradlew
+
+script:
+  - ./gradlew build
 
 after_success:
-- ./gradlew jacocoTestReport coveralls
+  - ./gradlew jacocoTestReport coveralls
 
 env:
   global:
