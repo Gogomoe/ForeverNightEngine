@@ -16,7 +16,8 @@ class ClassMap<T : Any> : MutableMap<KClass<out T>, T> {
 
     override fun containsValue(value: T) = map.containsValue(value)
 
-    override fun get(key: KClass<out T>) = map.get(key)
+    override fun get(key: KClass<out T>) = map[key]
+    fun <E : T> getWithCast(key: KClass<E>): E? = map[key] as E?
     inline fun <reified E : T> get() = get(E::class)
 
     override fun isEmpty() = map.isEmpty()

@@ -12,7 +12,7 @@ abstract class ComponentContainer {
     inline fun <reified T : Component> has() = has(T::class)
     operator fun contains(key: KClass<out Component>) = has(key)
 
-    operator fun get(key: KClass<out Component>): Component = components[key]!!
+    operator fun <T : Component> get(key: KClass<T>): T = components.getWithCast(key)!!
     inline fun <reified T : Component> get() = get(T::class)
 
     fun getOrNull(key: KClass<out Component>) = components[key]

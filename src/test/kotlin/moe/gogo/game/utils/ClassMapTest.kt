@@ -67,6 +67,14 @@ class ClassMapTest : StringSpec() {
                 empty.containsValue(it)
             }
         }
+        "get with cast"{
+            val map = createNumberClassMap()
+            val double: Double = Gen.double().generate()
+            map.put(double)
+
+            val d: Double = map.getWithCast(Double::class)!!
+            d shouldBe double
+        }
     }
 
     fun createNumberClassMap() = ClassMap<Number>()
