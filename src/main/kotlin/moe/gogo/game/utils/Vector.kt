@@ -1,6 +1,5 @@
-package moe.gogo.game.behavior
+package moe.gogo.game.utils
 
-import moe.gogo.game.utils.equal
 import java.lang.Math.pow
 import java.lang.Math.sqrt
 

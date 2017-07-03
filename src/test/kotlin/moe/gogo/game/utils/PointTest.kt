@@ -1,4 +1,4 @@
-package moe.gogo.game.behavior
+package moe.gogo.game.utils
 
 import io.kotlintest.matchers.shouldBe
 import io.kotlintest.matchers.shouldNotBe

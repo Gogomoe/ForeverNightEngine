@@ -1,6 +1,4 @@
-package moe.gogo.game.behavior
-
-import moe.gogo.game.utils.equal
+package moe.gogo.game.utils
 
 class Point(val x: Float, val y: Float) {
 
