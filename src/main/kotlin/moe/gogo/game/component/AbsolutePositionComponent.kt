@@ -1,8 +1,9 @@
 package moe.gogo.game.component
 
 import moe.gogo.game.utils.Point
+import moe.gogo.game.utils.ReadOnlyDelegate
+import moe.gogo.game.utils.ReadWriteDelegate
 import moe.gogo.game.view.UIComponent
-import kotlin.reflect.KMutableProperty0
 
 abstract class AbsolutePositionComponent : Component() {
 
@@ -10,7 +11,7 @@ abstract class AbsolutePositionComponent : Component() {
 
 }
 
-class AbsolutePositionComponentImpl(val parentPosition: () -> Point?, val selfPosition: KMutableProperty0<Point>) : AbsolutePositionComponent() {
+class AbsolutePositionComponentImpl(val parentPosition: ReadOnlyDelegate<Point?>, val selfPosition: ReadWriteDelegate<Point>) : AbsolutePositionComponent() {
 
     override var position: Point
         get() {
@@ -30,7 +31,12 @@ class AbsolutePositionComponentImpl(val parentPosition: () -> Point?, val selfPo
 
     companion object {
         operator fun invoke(container: UIComponent): AbsolutePositionComponent =
-                AbsolutePositionComponentImpl({ container.parent?.absolutePosition }, container::position)
+                AbsolutePositionComponentImpl(
+                        ReadOnlyDelegate { container.parent?.absolutePosition },
+                        ReadWriteDelegate(
+                                { container.position },
+                                { container.position = it }
+                        ))
 
     }
 

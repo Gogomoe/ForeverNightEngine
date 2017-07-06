@@ -19,3 +19,27 @@ fun <R> lazyVar(lazy: () -> R) = object : ReadWriteProperty<Any?, R> {
     }
 
 }
+
+interface ReadOnlyDelegate<out R> {
+    fun get(): R
+    operator fun invoke() = get()
+}
+
+fun <R> ReadOnlyDelegate(getter: () -> R) = object : ReadOnlyDelegate<R> {
+
+    override fun get(): R = getter()
+
+}
+
+interface ReadWriteDelegate<R> {
+    fun get(): R
+    fun set(value: R)
+}
+
+fun <R> ReadWriteDelegate(getter: () -> R, writer: (R) -> Unit) = object : ReadWriteDelegate<R> {
+
+    override fun get(): R = getter()
+
+    override fun set(value: R) = writer(value)
+
+}
