@@ -31,7 +31,7 @@ abstract class UIComponent : ComponentContainer() {
         get() = treeComponent.parent
 
     val children: Set<UIComponent>
-        get() = treeComponent.children ?: emptySet()
+        get() = treeComponent.children
 
     fun render(graphics2D: Graphics2D) = renderComponent.render(graphics2D)
 

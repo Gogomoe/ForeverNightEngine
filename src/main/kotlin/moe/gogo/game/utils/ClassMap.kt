@@ -3,7 +3,9 @@ package moe.gogo.game.utils
 import kotlin.collections.MutableMap.MutableEntry
 import kotlin.reflect.KClass
 
-
+/**
+ * 以类型(KClass)为键的Map
+ */
 class ClassMap<T : Any> : MutableMap<KClass<out T>, T> {
 
     private val map = mutableMapOf<KClass<out T>, T>()

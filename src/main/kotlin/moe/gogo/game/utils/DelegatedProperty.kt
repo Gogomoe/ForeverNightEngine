@@ -20,6 +20,35 @@ fun <R> lazyVar(lazy: () -> R) = object : ReadWriteProperty<Any?, R> {
 
 }
 
+class LazyProperty<R>(private val initializer: () -> R) {
+
+    private var initialized = false
+    private var property: R? = null
+
+    fun init() {
+        if (notInitialized()) {
+            property = initializer()
+            initialized = true
+        }
+    }
+
+    private fun notInitialized(): Boolean = !initialized && property == null
+
+    fun get(): R {
+        if (notInitialized()) {
+            throw IllegalStateException("LazyProperty not initialized")
+        }
+        return property!!
+    }
+
+    operator fun invoke() = get()
+
+    fun orNull(): R? = property
+
+    fun set(value: R) = kotlin.run { property = value }
+
+}
+
 interface ReadOnlyDelegate<out R> {
     fun get(): R
     operator fun invoke() = get()

@@ -20,18 +20,18 @@ open class UITreeComponent : Component() {
 
     private fun removeOldParent() {
         parent?.let {
-            it.treeComponent.children?.remove(UIComponent)
+            it.treeComponent.children.remove(UIComponent)
         }
     }
 
     private fun bindNewParent(value: UIComponent?) {
         value?.let {
-            it.treeComponent.children?.add(UIComponent)
+            it.treeComponent.children.add(UIComponent)
         }
     }
 
 
-    open var children: MutableSet<UIComponent>? = null
+    open var children: MutableSet<UIComponent> = mutableSetOf()
         protected set
 
 

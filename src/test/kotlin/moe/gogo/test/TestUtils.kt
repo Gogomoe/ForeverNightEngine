@@ -10,7 +10,7 @@ fun <E> `in`(collection: Collection<E>) = object : Matcher<E> {
 }
 
 fun bigger(number: Number) = object : Matcher<Number> {
-    override fun test(value: Number) = Result(value.toDouble() > number.toDouble(), "$value should bigger than $number")
+    override fun test(value: Number) = Result(value.toDouble() >= number.toDouble(), "$value should bigger than $number")
 }
 
 fun equal(target: Float) = object : Matcher<Float> {
@@ -28,5 +28,7 @@ class TestStatus {
     }
 
     infix fun shouldBe(value: Int) = this.value shouldBe value
+
+    infix fun shouldBigger(value: Int) = this.value shouldBe bigger(value)
 }
 
