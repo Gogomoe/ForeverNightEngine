@@ -9,3 +9,5 @@ fun notEqual(x1: Float, x2: Float, y1: Float, y2: Float): Boolean = !(x1 equal x
 fun generateXY() = Pair(Gen.float().generate(), Gen.float().generate())
 
 fun generatePoint() = Point(Gen.float().generate(), Gen.float().generate())
+
+fun generateWH() = Pair(Gen.int().generate(), Gen.int().generate())
