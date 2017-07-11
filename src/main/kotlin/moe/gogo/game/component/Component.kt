@@ -1,5 +1,7 @@
 package moe.gogo.game.component
 
+import kotlin.reflect.KClass
+
 /**
  * 所有组件的超类
  *
@@ -30,5 +32,16 @@ abstract class Component {
      * 组件替换掉另一个同类型的组件时的操作
      */
     open fun replace(other: Component) {}
+
+    /**
+     * 用于检验组件的依赖，通常在组件初始化[init]时进行检验
+     */
+    protected fun <T : Component> dependOn(clazz: KClass<T>): T {
+        check(container != null, { "${this::class.simpleName} did not initialized" })
+        check(container?.has(clazz)!!, { "${this::class.simpleName} depend on ${clazz.simpleName}" })
+        return container!![clazz]
+    }
+
+    protected inline fun <reified T : Component> dependOn() = dependOn(T::class)
 
 }

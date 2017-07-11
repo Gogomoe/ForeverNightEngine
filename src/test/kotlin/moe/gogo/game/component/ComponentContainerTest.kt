@@ -1,6 +1,7 @@
 package moe.gogo.game.component
 
 import io.kotlintest.matchers.shouldBe
+import io.kotlintest.matchers.shouldNotBe
 import io.kotlintest.matchers.shouldThrow
 import io.kotlintest.specs.StringSpec
 import moe.gogo.test.TestStatus
@@ -83,13 +84,43 @@ class ComponentContainerTest : StringSpec() {
                 Unit
             }
         }
+        "depend on other component"{
+            shouldThrow<IllegalStateException> {
+                val container = createContainer()
+                container[ComponentA::class] = createComponentA()
+                container[Component::class] = object : Component() {
+                    override fun init(container: ComponentContainer) {
+                        dependOn<ComponentA>()
+                        super.init(container)
+                    }
+                }
+                Unit
+            }
+            shouldThrow<IllegalStateException> {
+                val container = createContainer()
+                container[ComponentDependOnA::class] = createComponentDependOnA()
+                Unit
+            }
+            val container = createContainer()
+            container[ComponentA::class] = createComponentA()
+            container[ComponentDependOnA::class] = createComponentDependOnA()
+            container[ComponentDependOnA::class] shouldNotBe null
+        }
     }
 
     fun createContainer() = object : ComponentContainer() {}
 
     open class ComponentA : Component()
     open class ComponentB : Component()
+    open class ComponentDependOnA : Component() {
+        override fun init(container: ComponentContainer) {
+            super.init(container)
+            dependOn<ComponentA>()
+        }
+    }
 
     fun createComponentA() = ComponentA()
     fun createComponentB() = ComponentB()
+    fun createComponentDependOnA() = ComponentDependOnA()
+
 }
