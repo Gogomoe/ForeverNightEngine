@@ -1,6 +1,7 @@
 package moe.gogo.game.shape
 
 import moe.gogo.game.utils.Point
+import java.lang.Math.abs
 
 /**
  * 矩形
@@ -29,8 +30,8 @@ class Rect(val width: Int,
         val w = width.toFloat() / 2
         val h = height.toFloat() / 2
 
-        return x + w >= ox - ow && ox + ow >= x - w &&
-                y + h >= oy - oh && oy + oh >= y - h
+        // | x1 - x2 | <= w1 + w2 && | y1 - y2 | <= y1 + y2
+        return abs(x - ox) <= w + ow && abs(y - oy) <= h + oh
     }
 
     override fun boundingRect(): Rect = this
