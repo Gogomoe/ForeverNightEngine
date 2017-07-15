@@ -1,5 +1,6 @@
 package moe.gogo.game.component
 
+import moe.gogo.game.utils.EMPTY_IMAGE
 import java.awt.Graphics2D
 import java.awt.image.BufferedImage
 
@@ -8,7 +9,10 @@ import java.awt.image.BufferedImage
  */
 abstract class RenderComponent : Component() {
 
-    abstract fun render(graphics2D: Graphics2D)
+    /**
+     * 将组件渲染并绘制到[graphics]上
+     */
+    abstract fun render(graphics: Graphics2D)
 
     /**
      * 获取当前渲染的图片
@@ -17,13 +21,12 @@ abstract class RenderComponent : Component() {
 
 }
 
-val EMPTY_IMAGE = BufferedImage(1, 1, BufferedImage.TYPE_3BYTE_BGR)
 /**
  * 渲染的空实现
  */
 fun EmptyRenderComponent(): RenderComponent = object : RenderComponent() {
 
-    override fun render(graphics2D: Graphics2D) {
+    override fun render(graphics: Graphics2D) {
     }
 
     override fun renderImage(): BufferedImage = EMPTY_IMAGE
