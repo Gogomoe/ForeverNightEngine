@@ -1,5 +1,6 @@
 package moe.gogo.game.shape
 
+import moe.gogo.game.utils.EMPTY_POINT
 import moe.gogo.game.utils.Point
 import java.lang.Math.abs
 
@@ -8,7 +9,7 @@ import java.lang.Math.abs
  */
 class Rect(val width: Int,
            val height: Int,
-           override val position: Point) : Shape {
+           override val position: Point = EMPTY_POINT) : Shape() {
 
     override fun contains(point: Point): Boolean {
         val hw = width.toFloat() / 2
@@ -49,6 +50,8 @@ class Rect(val width: Int,
         return width * 27 + height * 31 + position.hashCode() * 43
     }
 
+    operator fun component1(): Int = width
+    operator fun component2(): Int = height
 
 }
 
