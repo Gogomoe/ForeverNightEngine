@@ -1,5 +1,6 @@
 package moe.gogo.game.shape
 
+import moe.gogo.game.utils.EMPTY_POINT
 import moe.gogo.game.utils.Point
 
 /**
@@ -7,9 +8,9 @@ import moe.gogo.game.utils.Point
  *
  * 形状依赖于[位置][position]
  */
-interface Shape {
+abstract class Shape {
 
-    val position: Point
+    open val position: Point = EMPTY_POINT
 
     val x
         get() = position.x
@@ -19,18 +20,18 @@ interface Shape {
     /**
      * 点是否位于形状中
      */
-    operator fun contains(point: Point): Boolean
+    abstract operator fun contains(point: Point): Boolean
 
     //TODO 添加默认的实现方式
     /**
      * 与其他形状是否相接处
      */
-    fun contact(other: Shape): Boolean = boundingRect().contact(other)
+    open fun contact(other: Shape): Boolean = boundingRect().contact(other)
 
     /**
      * 包围此形状的矩形
      */
-    fun boundingRect(): Rect
+    abstract fun boundingRect(): Rect
 
-    fun shiftTo(point: Point): Shape
+    abstract fun shiftTo(point: Point): Shape
 }
