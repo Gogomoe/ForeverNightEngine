@@ -6,6 +6,7 @@ import moe.gogo.game.input.MouseEvent
 import moe.gogo.game.input.MouseEventHandler
 import moe.gogo.game.input.MouseEventType.CLICK
 import moe.gogo.game.utils.EMPTY_POINT
+import moe.gogo.game.utils.Point
 import moe.gogo.test.TestStatus
 
 class BaseSceneTest : StringSpec() {
@@ -31,7 +32,7 @@ class BaseSceneTest : StringSpec() {
             scene.createLayer({ testLayer(status, scene) }, 0)
             // render 1          mouse event 5
 
-            scene.render(View())
+            scene.render(createCamera())
             status shouldBe 2
 
             scene.mouseEventHandler(MouseEvent(EMPTY_POINT, CLICK))
@@ -51,7 +52,7 @@ class BaseSceneTest : StringSpec() {
     }
 
     private fun testLayer(status: TestStatus, scene: Scene) = object : UILayer(scene) {
-        override fun render(view: View) {
+        override fun render(camera: Camera) {
             status.next(1)
         }
 
@@ -61,6 +62,10 @@ class BaseSceneTest : StringSpec() {
                 event.consume()
             }
         }
+    }
+
+    private fun createCamera(): Camera = object : Camera() {
+        override fun shiftTo(point: Point) {}
     }
 
     private fun createScene() = BaseScene()

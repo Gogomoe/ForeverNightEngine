@@ -26,16 +26,16 @@ class BaseScene : Scene() {
 
     override fun createLayer(): Layer = createLayer({ UILayer(it) }, size)
 
-    override fun render(view: View) {
-        val image: BufferedImage = buildImage(view.screenRange)
+    override fun render(camera: Camera) {
+        val image: BufferedImage = buildImage(camera.screenRange)
         val graphics: Graphics2D = image.createGraphics()
-        drawImage(view, graphics)
+        drawImage(camera, graphics)
         this.image = image
     }
 
-    private fun drawImage(view: View, graphics: Graphics2D) {
+    private fun drawImage(camera: Camera, graphics: Graphics2D) {
         layerList.forEach {
-            it.render(view)
+            it.render(camera)
             graphics.drawImage(it.image, 0, 0, null)
         }
     }

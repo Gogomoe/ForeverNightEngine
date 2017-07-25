@@ -49,10 +49,10 @@ class UILayerTest : StringSpec() {
             val layer = createLayer()
             val state = TestStatus()
             val component1 = createRenderComponent(state)
-            val view = createView(100, 80)
+            val camera = createCamera(100, 80)
 
             layer.add(component1)
-            layer.render(view)
+            layer.render(camera)
 
             state shouldBe 1
             layer.image.width shouldBe 100
@@ -113,7 +113,7 @@ class UILayerTest : StringSpec() {
 
         override fun createLayer(): Layer = nothing()
 
-        override fun render(view: View) = nothing()
+        override fun render(camera: Camera) = nothing()
 
         override val image: BufferedImage
             get() = nothing()
@@ -136,25 +136,24 @@ class UILayerTest : StringSpec() {
         }
     }
 
-    private fun createView(width: Int = 100, height: Int = 80) = View().also {
-        it.screenRange = Rect(width, height, EMPTY_POINT)
+    private fun createCamera(width: Int = 100, height: Int = 80): Camera = object : Camera() {
+        override val screenRange: Rect = Rect(width, height)
+        override fun shiftTo(point: Point) {}
     }
 
-    private fun createMouseEventComponent(shape: Rect, mouseEventComponent: MouseEventComponent = emptyMouseEventComponent()): UIComponent = object : UIComponent() {
-        init {
-            this[ShapeComponent::class] = object : ShapeComponent() {
-                override val shape: Shape = shape
-            }
-            this[MouseEventComponent::class] = mouseEventComponent
-        }
-    }
 
-    private fun createMouseEventComponent(shape: Rect, status: TestStatus): UIComponent = object : UIComponent() {
-        init {
-            this[ShapeComponent::class] = object : ShapeComponent() {
-                override val shape: Shape = shape
+    private fun createMouseEventComponent(shape: Rect, mouseEventComponent: MouseEventComponent = emptyMouseEventComponent()): UIComponent =
+            object : UIComponent() {
+                init {
+                    this[ShapeComponent::class] = object : ShapeComponent() {
+                        override val shape: Shape = shape
+                    }
+                    this[MouseEventComponent::class] = mouseEventComponent
+                }
             }
-            this[MouseEventComponent::class] = object : MouseEventComponent() {
+
+    private fun createMouseEventComponent(shape: Rect, status: TestStatus): UIComponent = createMouseEventComponent(shape,
+            object : MouseEventComponent() {
                 override fun handleClick(event: MouseEvent) {
                     consume(event, 1)
                 }
@@ -178,17 +177,18 @@ class UILayerTest : StringSpec() {
                 override fun handleMove(event: MouseEvent) {
                     consume(event, 6)
                 }
-            }
-        }
 
-        fun consume(event: MouseEvent, value: Int) {
-            status.next(value)
-            event.consume()
-        }
-    }
+                fun consume(event: MouseEvent, value: Int) {
+                    status.next(value)
+                    event.consume()
+                }
+            }
+    )
+
 
     private fun createEvent(x: Number = 0, y: Number = 0, type: MouseEventType = CLICK)
             = MouseEvent(Point(x, y), type)
+
 
     private fun emptyMouseEventComponent() = object : MouseEventComponent() {}
 

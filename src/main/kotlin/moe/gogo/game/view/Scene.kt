@@ -36,7 +36,7 @@ abstract class Scene {
     /**
      * 渲染此层，渲染后会更新[image]属性
      */
-    abstract fun render(view: View)
+    abstract fun render(camera: Camera)
 
     /**
      * 上次已经渲染的图片

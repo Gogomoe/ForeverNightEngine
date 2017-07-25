@@ -26,8 +26,8 @@ open class UILayer constructor(scene: Scene) : Layer(scene) {
     open fun add(component: UIComponent) = components.add(component)
     open fun remove(component: UIComponent) = components.remove(component)
 
-    override fun render(view: View) {
-        val image: BufferedImage = buildImage(view.screenRange)
+    override fun render(camera: Camera) {
+        val image: BufferedImage = buildImage(camera.screenRange)
         val graphics: Graphics2D = image.createGraphics()
         components.forEach { it.render(graphics) }
         this.image = image

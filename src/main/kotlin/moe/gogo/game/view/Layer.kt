@@ -1,6 +1,5 @@
 package moe.gogo.game.view
 
-import moe.gogo.game.input.MouseEvent
 import moe.gogo.game.input.MouseEventHandler
 import java.awt.image.BufferedImage
 
@@ -14,7 +13,7 @@ abstract class Layer(val scene: Scene) {
     /**
      * 渲染此层，渲染后会更新[image]属性
      */
-    abstract fun render(view: View)
+    abstract fun render(camera: Camera)
 
     /**
      * 上次渲染后的图像
