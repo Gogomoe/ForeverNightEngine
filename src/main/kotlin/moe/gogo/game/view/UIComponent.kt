@@ -31,11 +31,27 @@ abstract class UIComponent : ComponentContainer() {
 
     var position: Point
         get() = positionComponent.position
-        set(value) = run { positionComponent.position = value }
+        set(value) {
+            positionComponent.position = value
+        }
+
+    var x: Float
+        get() = position.x
+        set(value) {
+            position = position.setX(value)
+        }
+
+    var y: Float
+        get() = position.x
+        set(value) {
+            position = position.setY(value)
+        }
 
     var absolutePosition: Point
         get() = absolutePositionComponent.position
-        set(value) = run { absolutePositionComponent.position = value }
+        set(value) {
+            absolutePositionComponent.position = value
+        }
 
     val parent: UIComponent?
         get() = treeComponent.parent
@@ -56,6 +72,4 @@ abstract class UIComponent : ComponentContainer() {
 
     val renderComponent: RenderComponent
         get() = this[RenderComponent::class]
-
-
 }

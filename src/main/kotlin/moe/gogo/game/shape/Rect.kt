@@ -53,5 +53,8 @@ class Rect(val width: Int,
     operator fun component1(): Int = width
     operator fun component2(): Int = height
 
+    override fun toString(): String {
+        return "Rect($width, $height, $position)"
+    }
 }
 

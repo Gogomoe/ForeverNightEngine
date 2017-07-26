@@ -19,6 +19,9 @@ class VectorTest : StringSpec() {
                 val (x1, y1) = generateXY()
                 Vector(x1, y1) shouldBe Vector(x1, y1)
                 Vector(x1, y1).hashCode() shouldBe Vector(x1, y1).hashCode()
+                val (x, y) = Vector(x1, y1)
+                x shouldBe x1
+                y shouldBe y1
             }
         }
         "vector should not equal"{
@@ -37,6 +40,22 @@ class VectorTest : StringSpec() {
             (1..10).forEach {
                 val (x1, y1) = generateXY()
                 Vector(x1 - 0.02, y1 + 0.02) shouldBe Vector(x1 + 0.02, y1 - 0.02)
+            }
+        }
+        "change x or y"{
+            (1..10).forEach {
+                val (x1, y1) = generateXY()
+                val (x2, y2) = generateXY()
+                Vector(x1, y1).setX(x2) shouldBe Vector(x2, y1)
+                Vector(x1, y1).setY(y2) shouldBe Vector(x1, y2)
+            }
+        }
+        "get x or y"{
+            (1..10).forEach {
+                val (x1, y1) = generateXY()
+                Vector(x1, y1).x shouldBe x1
+                Vector(x1, y1).y shouldBe y1
+                Vector(x1, y1).int() shouldBe Pair(x1.toInt(), y1.toInt())
             }
         }
         "plus vector"{

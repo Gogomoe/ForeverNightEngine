@@ -39,7 +39,7 @@ class MouseEventConverterTest : StringSpec() {
                 val converted1 = convert(e1, true, true)!!
                 val converted2 = buildWithType(e2, CLICK)
                 converted1.consume()
-                converted2.consume()
+                converted2.consumed = true
                 e1.consumed shouldBe true
                 e2.consumed shouldBe true
             }
