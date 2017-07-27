@@ -41,7 +41,7 @@ class MouseEventConverterTest : StringSpec() {
                 converted1.consume()
                 converted2.consumed = true
                 e1.consumed shouldBe true
-                e2.consumed shouldBe true
+                converted2.consumed shouldBe true
             }
         }
     }

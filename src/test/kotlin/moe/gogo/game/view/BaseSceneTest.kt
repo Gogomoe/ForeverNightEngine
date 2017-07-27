@@ -14,7 +14,7 @@ class BaseSceneTest : StringSpec() {
     init {
         "create layer"{
             val scene: Scene = createScene()
-            val layer1: Layer = scene.createLayer()
+            val layer1: Layer = scene.createLayer({ UILayer(scene) })
 
             scene.size shouldBe 1
             scene.layers[0] shouldBe layer1
@@ -24,6 +24,10 @@ class BaseSceneTest : StringSpec() {
             scene.size shouldBe 2
             scene.layers[0] shouldBe layer2
             scene.layers[1] shouldBe layer1
+
+            scene.layer(::UILayer, {
+                scene.size shouldBe 3
+            })
         }
         "render and handle mouse event"{
             val scene: Scene = createScene()

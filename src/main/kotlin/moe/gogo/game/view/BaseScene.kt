@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage
 /**
  * 默认实现的[Scene]，创建[Layer]时默认创建[UILayer]
  */
-class BaseScene : Scene() {
+open class BaseScene : Scene() {
 
     val layerList: MutableList<Layer> = mutableListOf()
 
@@ -20,11 +20,9 @@ class BaseScene : Scene() {
     override val size: Int
         get() = layerList.size
 
-    override fun createLayer(builder: (Scene) -> Layer, index: Int): Layer = builder(this).also {
+    override fun <T : Layer> createLayer(builder: (Scene) -> T, index: Int): T = builder(this).also {
         layerList.add(index, it)
     }
-
-    override fun createLayer(): Layer = createLayer({ UILayer(it) }, size)
 
     override fun render(camera: Camera) {
         val image: BufferedImage = buildImage(camera.screenRange)

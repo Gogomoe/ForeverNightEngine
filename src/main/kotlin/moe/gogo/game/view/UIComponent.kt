@@ -42,7 +42,7 @@ abstract class UIComponent : ComponentContainer() {
         }
 
     var y: Float
-        get() = position.x
+        get() = position.y
         set(value) {
             position = position.setY(value)
         }

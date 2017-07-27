@@ -33,7 +33,9 @@ class UILayerTest : StringSpec() {
             val component2 = createComponent()
 
             layer.add(component1)
-            layer.add(component2)
+            layer.add(component2) {
+                component2 should `in`(layer.components)
+            }
 
             component1 should `in`(layer.components)
             component2 should `in`(layer.components)
@@ -106,12 +108,11 @@ class UILayerTest : StringSpec() {
     private fun createComponent() = object : UIComponent() {}
 
     private fun createLayer() = UILayer(object : Scene() {
+
         override val layers: List<Layer>
             get() = nothing()
 
-        override fun createLayer(builder: (Scene) -> Layer, index: Int): Layer = nothing()
-
-        override fun createLayer(): Layer = nothing()
+        override fun <T : Layer> createLayer(builder: (Scene) -> T, index: Int): T = nothing()
 
         override fun render(camera: Camera) = nothing()
 

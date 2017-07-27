@@ -26,12 +26,7 @@ abstract class Scene {
     /**
      * 根据指定的[构建器][builder]及[位置][index]，创建新的层
      */
-    abstract fun createLayer(builder: (Scene) -> Layer, index: Int = size): Layer
-
-    /**
-     * 以默认层数创建新层
-     */
-    abstract fun createLayer(): Layer
+    abstract fun <T : Layer> createLayer(builder: (Scene) -> T, index: Int = size): T
 
     /**
      * 渲染此层，渲染后会更新[image]属性
@@ -47,5 +42,13 @@ abstract class Scene {
      * 用于处理鼠标事件的处理器
      */
     abstract val mouseEventHandler: MouseEventHandler
+
+    /**
+     * 用于DSL的添加Layer的方式
+     */
+    open fun <T : Layer> layer(layerBuilder: (Scene) -> T, call: T.() -> Unit = {}) {
+        val layer = createLayer(layerBuilder)
+        call(layer)
+    }
 
 }
