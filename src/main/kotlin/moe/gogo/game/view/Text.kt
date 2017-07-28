@@ -51,7 +51,9 @@ open class Text constructor(var text: String = DEFAULT_TEXT,
         override fun render(graphics: Graphics2D) {
             val image = renderImage()
             val (x, y) = text.position.int()
-            graphics.drawImage(image, x, y, null)
+            val (w, h) = text.shape
+            // 绘制时以 Position 为中心
+            graphics.drawImage(image, x - w / 2, y - h / 2, null)
         }
 
         override fun renderImage(): BufferedImage {
@@ -102,7 +104,7 @@ open class Text constructor(var text: String = DEFAULT_TEXT,
                 if (text.render.fontSize == EMPTY_RECT) {
                     text.renderComponent.renderImage()
                 }
-                return text.render.fontSize
+                return text.render.fontSize.shiftTo(text.position)
             }
     }
 

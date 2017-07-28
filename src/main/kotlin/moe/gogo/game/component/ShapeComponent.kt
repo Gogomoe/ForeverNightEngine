@@ -6,6 +6,9 @@ import moe.gogo.game.utils.Point
 
 /**
  * 具有一定形状的组件，用于产生碰撞、点击等当面
+ *
+ * 注意，获取的shape对象的position 应该与 container.position相同，否则可能会造成位置错误。
+ * 可以使用 `shape.shiftTo(container.position)` 等方法修正位置
  */
 abstract class ShapeComponent : Component() {
 
