@@ -7,6 +7,7 @@ import io.kotlintest.matchers.shouldNotBe
 import io.kotlintest.properties.Gen
 import io.kotlintest.specs.StringSpec
 import moe.gogo.game.utils.Point
+import moe.gogo.test.equal
 import moe.gogo.test.generateWH
 import moe.gogo.test.generateXY
 
@@ -28,33 +29,19 @@ class RectTest : StringSpec() {
             rect shouldNot contains(Point(-3, 13))
             rect shouldNot contains(Point(-7, -9))
         }
-        "contact other rect"{
-            val r1 = createRect(20, 20, 0, 0)
-            val r2 = createRect(5, 20, 0, 15)
-            val r3 = createRect(15, 15, 15, 15)
-            val r4 = createRect(20, 5, 15, 0)
-            val r5 = createRect(50, 50, 0, 0)
 
-            r1 should contact(r2)
-            r1 should contact(r3)
-            r1 should contact(r4)
-            r1 should contact(r5)
-            r2 should contact(r1)
-            r3 should contact(r1)
-            r4 should contact(r1)
-            r5 should contact(r1)
-
-            r2 shouldNot contact(r3)
-            r2 shouldNot contact(r4)
-            r3 shouldNot contact(r2)
-            r3 shouldNot contact(r4)
-            r4 shouldNot contact(r2)
-            r4 shouldNot contact(r3)
-        }
         "shift to other position"{
             val r1 = createRect(10, 20, 0, 0)
             r1.shiftTo(Point(25, 30)) shouldBe createRect(10, 20, 25, 30)
             r1.shiftTo(Point(-57, 16)) shouldBe createRect(10, 20, -57, 16)
+        }
+        "half and half float"{
+            val rect = createRect(Gen.int().generate(), Gen.int().generate())
+            val (w, h) = rect
+            rect.half().first shouldBe w / 2
+            rect.half().second shouldBe h / 2
+            rect.halfFloat().first should equal(w.toFloat() / 2)
+            rect.halfFloat().second should equal(h.toFloat() / 2)
         }
         "rect equal"{
             for (i in 1..10) {
@@ -73,8 +60,16 @@ class RectTest : StringSpec() {
             createRect(w, h, x, y).equals(Object()) shouldBe false
 
         }
+        "shape contact by rect"{
+            val a = ShapeA(Rect(10, 10))
+            val b = ShapeB(Rect(10, 10))
+            a should contact(b)
+            ColliderRegistry.register(BACollider())
+            a should contact(b)
+            ColliderRegistry.register(ABCollider())
+            a should contact(b)
+        }
 
     }
 
-    fun createRect(w: Int, h: Int, x: Number, y: Number) = Rect(w, h, Point(x, y))
 }
