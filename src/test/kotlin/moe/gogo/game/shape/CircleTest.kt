@@ -44,8 +44,8 @@ class CircleTest : StringSpec() {
             }
             val (x, y) = generateXY()
             val r = Gen.int().generate()
-            createCircle(5, x, y) shouldNotBe Object()
-            createCircle(5, x, y).equals(Object()) shouldBe false
+            createCircle(r, x, y) shouldNotBe Object()
+            createCircle(r, x, y).equals(Object()) shouldBe false
         }
         "bounding rect"{
             createCircle(5).boundingRect() shouldBe createRect(10, 10)
