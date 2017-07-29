@@ -15,6 +15,8 @@ fun contact(target: Shape) = object : Matcher<Shape> {
 
 fun createRect(w: Int, h: Int, x: Number = 0, y: Number = 0) = Rect(w, h, Point(x, y))
 
+fun createCircle(r: Int, x: Number = 0, y: Number = 0) = Circle(r, Point(x, y))
+
 class ShapeA(val rect: Rect) : Shape() {
 
     override fun contains(point: Point): Boolean = rect.contains(point)

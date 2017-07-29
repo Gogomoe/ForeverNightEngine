@@ -60,6 +60,10 @@ class RectTest : StringSpec() {
             createRect(w, h, x, y).equals(Object()) shouldBe false
 
         }
+        "bounding rect"{
+            val rect = Rect(7, 8)
+            rect.boundingRect() shouldBe rect
+        }
         "shape contact by rect"{
             val a = ShapeA(Rect(10, 10))
             val b = ShapeB(Rect(10, 10))
