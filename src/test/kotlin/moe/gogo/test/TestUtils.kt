@@ -4,6 +4,7 @@ import io.kotlintest.matchers.Matcher
 import io.kotlintest.matchers.Result
 import io.kotlintest.matchers.shouldBe
 import moe.gogo.game.utils.equal
+import java.awt.GraphicsEnvironment
 
 fun <E> `in`(collection: Collection<E>) = object : Matcher<E> {
     override fun test(value: E) = Result(value in collection, "$value should in the collection $collection")
@@ -32,3 +33,4 @@ class TestStatus {
     infix fun shouldBigger(value: Int) = this.value shouldBe bigger(value)
 }
 
+fun couldRunSwing(): Boolean = !GraphicsEnvironment.isHeadless()
