@@ -15,7 +15,7 @@ class Point(val x: Float, val y: Float) {
 
     override fun equals(other: Any?): Boolean = when (other) {
         is Point -> {
-            x equal other.x && y equal other.y
+            x equal other.x && y equal other.y && hashCode() == other.hashCode()
         }
         else -> false
     }
@@ -25,7 +25,7 @@ class Point(val x: Float, val y: Float) {
 
     fun int() = Pair(x.toInt(), y.toInt())
 
-    override fun hashCode(): Int = (x * 47 + y * 29).toInt()
+    override fun hashCode(): Int = (x * 0.1).toInt() * 47 + (y * 0.1).toInt() * 29
 
     override fun toString(): String = "(%.1f, %.1f)".format(x, y)
 
