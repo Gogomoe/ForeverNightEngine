@@ -4,12 +4,12 @@ import io.kotlintest.matchers.shouldBe
 import io.kotlintest.matchers.shouldNotBe
 import io.kotlintest.specs.StringSpec
 import moe.gogo.game.view.WindowFactoryImpl
-import moe.gogo.test.couldRunSwing
+import moe.gogo.test.runSwing
 
 class ScreenUtilsTest : StringSpec() {
 
     init {
-        if (couldRunSwing()) {
+        runSwing {
             "screen size"{
                 screenSize() shouldNotBe null
             }

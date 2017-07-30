@@ -2,13 +2,13 @@ package moe.gogo.game.view
 
 import io.kotlintest.matchers.shouldBe
 import io.kotlintest.specs.StringSpec
-import moe.gogo.test.couldRunSwing
+import moe.gogo.test.runSwing
 import javax.swing.JFrame
 
 class WindowFactoryImplTest : StringSpec() {
 
     init {
-        if (couldRunSwing()) {
+        runSwing {
             "build window"{
                 val factory = WindowFactoryImpl()
                 val window = factory.build()

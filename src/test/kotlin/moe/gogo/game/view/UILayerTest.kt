@@ -21,6 +21,7 @@ import moe.gogo.game.utils.EMPTY_POINT
 import moe.gogo.game.utils.Point
 import moe.gogo.test.TestStatus
 import moe.gogo.test.`in`
+import moe.gogo.test.has
 import java.awt.Graphics2D
 import java.awt.image.BufferedImage
 
@@ -56,7 +57,7 @@ class UILayerTest : StringSpec() {
             layer.add(component1)
             layer.render(camera)
 
-            state shouldBe 1
+            state should has(RENDER_COUNT)
             layer.image.width shouldBe 100
             layer.image.height shouldBe 80
         }
@@ -68,14 +69,16 @@ class UILayerTest : StringSpec() {
             layer.add(createComponent())
             layer.add(createMouseEventComponent(shape, status))
 
-            layer(createEvent(type = CLICK)) // 1
-            layer(createEvent(type = PRESS)) // 2
-            layer(createEvent(type = RELEASE)) // 3
-            status shouldBe 6
+            layer(createEvent(type = CLICK))
+            layer(createEvent(type = PRESS))
+            layer(createEvent(type = RELEASE))
 
-            layer(createEvent(20, 20, type = CLICK))
+            status should has(CLICK_COUNT)
+            status should has(PRESS_COUNT)
+            status should has(RELEASE_COUNT)
 
-            status shouldBe 6
+            status should has(MOUSE_EVENT_COUNT, 3)
+
         }
         "dispenser move mouse event"{
             val layer = createLayer()
@@ -83,12 +86,14 @@ class UILayerTest : StringSpec() {
             val status = TestStatus()
             layer.add(createMouseEventComponent(shape, status))
 
-            layer(createEvent(0, 0, type = MOVE))  // 6
-            layer(createEvent(20, 20, type = MOVE)) // 5
+            layer(createEvent(0, 0, type = MOVE))  // Move
+            layer(createEvent(20, 20, type = MOVE)) // Exit
             layer(createEvent(30, 30, type = MOVE))
-            layer(createEvent(5, 5, type = MOVE))  // 4
+            layer(createEvent(5, 5, type = MOVE))  // Enter
 
-            status shouldBe 15
+            status should has(MOVE_COUNT)
+            status should has(EXIT_COUNT)
+            status should has(ENTER_COUNT)
         }
         "send consumed event"{
             val layer = createLayer()
@@ -100,7 +105,7 @@ class UILayerTest : StringSpec() {
             e.consume()
 
             layer.mouseEventHandler(e)
-            status shouldBe 0
+            status[MOUSE_EVENT_COUNT] shouldBe 0
         }
     }
 
@@ -129,13 +134,14 @@ class UILayerTest : StringSpec() {
             this[RenderComponent::class] = object : RenderComponent() {
 
                 override fun render(graphics: Graphics2D) {
-                    state.next()
+                    state.next(RENDER_COUNT)
                 }
 
                 override fun renderImage(): BufferedImage = EMPTY_IMAGE
             }
         }
     }
+
 
     private fun createCamera(width: Int = 100, height: Int = 80): Camera = object : Camera() {
         override val screenRange: Rect = Rect(width, height)
@@ -156,36 +162,46 @@ class UILayerTest : StringSpec() {
     private fun createMouseEventComponent(shape: Rect, status: TestStatus): UIComponent = createMouseEventComponent(shape,
             object : MouseEventComponent() {
                 override fun handleClick(event: MouseEvent) {
-                    consume(event, 1)
+                    consume(event, CLICK_COUNT)
                 }
 
                 override fun handlePress(event: MouseEvent) {
-                    consume(event, 2)
+                    consume(event, PRESS_COUNT)
                 }
 
                 override fun handleRelease(event: MouseEvent) {
-                    consume(event, 3)
+                    consume(event, RELEASE_COUNT)
                 }
 
                 override fun handleEnter(event: MouseEvent) {
-                    consume(event, 4)
+                    consume(event, ENTER_COUNT)
                 }
 
                 override fun handleExit(event: MouseEvent) {
-                    consume(event, 5)
+                    consume(event, EXIT_COUNT)
                 }
 
                 override fun handleMove(event: MouseEvent) {
-                    consume(event, 6)
+                    consume(event, MOVE_COUNT)
                 }
 
-                fun consume(event: MouseEvent, value: Int) {
-                    status.next(value)
+                fun consume(event: MouseEvent, type: String) {
+                    status.next(MOUSE_EVENT_COUNT)
+                    status.next(type)
                     event.consume()
                 }
             }
     )
 
+    val RENDER_COUNT = "render"
+    val MOUSE_EVENT_COUNT = "mouse event"
+
+    val CLICK_COUNT = "click"
+    val PRESS_COUNT = "press"
+    val RELEASE_COUNT = "release"
+    val ENTER_COUNT = "enter"
+    val EXIT_COUNT = "exit"
+    val MOVE_COUNT = "move"
 
     private fun createEvent(x: Number = 0, y: Number = 0, type: MouseEventType = CLICK)
             = MouseEvent(Point(x, y), type)

@@ -1,9 +1,11 @@
 package moe.gogo.game
 
+import io.kotlintest.matchers.should
 import io.kotlintest.matchers.shouldBe
 import io.kotlintest.properties.Gen
 import io.kotlintest.specs.StringSpec
 import moe.gogo.test.TestStatus
+import moe.gogo.test.has
 
 
 class EventDispenserTest : StringSpec() {
@@ -14,16 +16,17 @@ class EventDispenserTest : StringSpec() {
         }
         "receive events"{
             val (dispenser, status) = createEventDispenserAndStatus()
-            dispenser.subscribe<String> { status.next() }
-            dispenser.subscribe(Number::class) { status.next(5) }
-            dispenser.subscribe(Int::class, Observer { status.next(10) })
+            dispenser.subscribe<String> { status.next(STRING_COUNT) }
+            dispenser.subscribe(Number::class) { status.next(NUMBEI_COUNT) }
+            dispenser.subscribe(Int::class, Observer { status.next(INT_COUNT) })
 
             dispenser.emit(Gen.string().generate())
             dispenser.emit(Gen.string().generate())
             dispenser.emit(Gen.int().generate())
 
-            // 2 (String) + 5 (Number) + 10 (Int)
-            status shouldBe 17
+            status should has(STRING_COUNT, 2)
+            status should has(NUMBEI_COUNT)
+            status should has(INT_COUNT)
         }
         "only observer of current class could receive events"{
             val (dispenser, status) = createEventDispenserAndStatus()
@@ -63,4 +66,8 @@ class EventDispenserTest : StringSpec() {
 
     private fun createEventDispenserAndStatus() = Pair(EventDispenser(), TestStatus())
     private fun createEventDispenser() = EventDispenser()
+
+    val NUMBEI_COUNT = "number"
+    val INT_COUNT = "int"
+    val STRING_COUNT = "string"
 }

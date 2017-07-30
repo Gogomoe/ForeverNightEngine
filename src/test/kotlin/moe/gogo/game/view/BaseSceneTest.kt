@@ -1,5 +1,6 @@
 package moe.gogo.game.view
 
+import io.kotlintest.matchers.should
 import io.kotlintest.matchers.shouldBe
 import io.kotlintest.specs.StringSpec
 import moe.gogo.game.input.MouseEvent
@@ -8,6 +9,7 @@ import moe.gogo.game.input.MouseEventType.CLICK
 import moe.gogo.game.utils.EMPTY_POINT
 import moe.gogo.game.utils.Point
 import moe.gogo.test.TestStatus
+import moe.gogo.test.has
 
 class BaseSceneTest : StringSpec() {
 
@@ -34,13 +36,12 @@ class BaseSceneTest : StringSpec() {
             val status = TestStatus()
             scene.createLayer({ testLayer(status, scene) }, 0)
             scene.createLayer({ testLayer(status, scene) }, 0)
-            // render 1          mouse event 5
 
             scene.render(createCamera())
-            status shouldBe 2
+            status should has(RENDER_COUNT, 2)
 
             scene.mouseEventHandler(MouseEvent(EMPTY_POINT, CLICK))
-            status shouldBe 7
+            status should has(MOUSE_EVENT_COUNT)
         }
         "send consumed event"{
             val scene: Scene = createScene()
@@ -51,18 +52,18 @@ class BaseSceneTest : StringSpec() {
             e.consume()
             scene.mouseEventHandler(e)
 
-            status shouldBe 0
+            status.count(MOUSE_EVENT_COUNT) shouldBe 0
         }
     }
 
     private fun testLayer(status: TestStatus, scene: Scene) = object : UILayer(scene) {
         override fun render(camera: Camera) {
-            status.next(1)
+            status.next("render")
         }
 
         override val mouseEventHandler: MouseEventHandler = object : MouseEventHandler {
             override fun handle(event: MouseEvent) {
-                status.next(5)
+                status.next(MOUSE_EVENT_COUNT)
                 event.consume()
             }
         }
@@ -73,5 +74,8 @@ class BaseSceneTest : StringSpec() {
     }
 
     private fun createScene() = BaseScene()
+
+    private val MOUSE_EVENT_COUNT = "mouse event"
+    private val RENDER_COUNT = "render"
 
 }

@@ -1,8 +1,10 @@
 package moe.gogo.game.view
 
+import io.kotlintest.matchers.should
 import io.kotlintest.specs.StringSpec
 import moe.gogo.game.input.MouseEventHandler
 import moe.gogo.test.TestStatus
+import moe.gogo.test.has
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 import java.awt.event.MouseEvent.MOUSE_CLICKED
@@ -30,14 +32,14 @@ class PanelFactoryImplTest : StringSpec() {
                 mouseDragged(buildEvent(panel, MOUSE_DRAGGED))
                 mouseExited(buildEvent(panel, MOUSE_EXITED))
             }
-            state shouldBe 7
+            state should has(MOUSE_EVENT_COUNT, 7)
         }
     }
 
     private fun listeningMouseEventScene(state: TestStatus): Scene = object : BaseScene() {
         override val mouseEventHandler: MouseEventHandler = object : MouseEventHandler {
             override fun handle(event: moe.gogo.game.input.MouseEvent) {
-                state.next()
+                state.next(MOUSE_EVENT_COUNT)
             }
         }
     }
@@ -48,4 +50,5 @@ class PanelFactoryImplTest : StringSpec() {
             = MouseEvent(panel, type, 0, 0, 0, 0, 0, false)
 
 
+    private val MOUSE_EVENT_COUNT = "mouse event"
 }

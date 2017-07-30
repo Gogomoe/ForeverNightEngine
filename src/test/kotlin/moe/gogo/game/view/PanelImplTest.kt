@@ -1,5 +1,6 @@
 package moe.gogo.game.view
 
+import io.kotlintest.matchers.should
 import io.kotlintest.matchers.shouldBe
 import io.kotlintest.specs.StringSpec
 import moe.gogo.game.shape.Rect
@@ -7,6 +8,7 @@ import moe.gogo.game.utils.EMPTY_IMAGE
 import moe.gogo.game.utils.EMPTY_POINT
 import moe.gogo.test.TestStatus
 import moe.gogo.test.generatePoint
+import moe.gogo.test.has
 import java.awt.Graphics
 import java.awt.image.BufferedImage
 
@@ -48,7 +50,7 @@ class PanelImplTest : StringSpec() {
             panel.load(listeningImageScene(state))
             func.invoke(panel, EMPTY_IMAGE.createGraphics())
 
-            state shouldBe 1
+            state should has(READ_IMAGE_COUNT)
         }
     }
 
@@ -60,10 +62,11 @@ class PanelImplTest : StringSpec() {
     private fun listeningImageScene(state: TestStatus): Scene = object : BaseScene() {
         override var image: BufferedImage = super.image
             get() {
-                state.next()
+                state.next(READ_IMAGE_COUNT)
                 return super.image
             }
     }
 
+    val READ_IMAGE_COUNT = "read image"
 
 }
