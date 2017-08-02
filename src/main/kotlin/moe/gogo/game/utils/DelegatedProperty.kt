@@ -49,26 +49,19 @@ class LazyProperty<R>(private val initializer: () -> R) {
 
 }
 
-interface ReadOnlyDelegate<out R> {
-    fun get(): R
+typealias ReadOnlyDelegate<T> = () -> T
+
+interface ReadWriteDelegate<T> {
+    fun get(): T
+    fun set(value: T)
     operator fun invoke() = get()
+    operator fun invoke(value: T) = set(value)
 }
 
-fun <R> ReadOnlyDelegate(getter: () -> R) = object : ReadOnlyDelegate<R> {
+fun <T> ReadWriteDelegate(getter: () -> T, writer: (T) -> Unit) = object : ReadWriteDelegate<T> {
 
-    override fun get(): R = getter()
+    override fun get(): T = getter()
 
-}
-
-interface ReadWriteDelegate<R> {
-    fun get(): R
-    fun set(value: R)
-}
-
-fun <R> ReadWriteDelegate(getter: () -> R, writer: (R) -> Unit) = object : ReadWriteDelegate<R> {
-
-    override fun get(): R = getter()
-
-    override fun set(value: R) = writer(value)
+    override fun set(value: T) = writer(value)
 
 }

@@ -9,9 +9,12 @@ import moe.gogo.game.utils.Point
 /**
  * 位置的组件
  *
- * 由于Entity可以被添加到另一个Entity上，PositionComponent通常表示的是父容器的相对位置
+ * PositionComponent通常表示的是容器的绝对位置，
+ * 要获取容器的相对位置，请参考[RelativePositionComponent]
  *
  * 可以通过[onChange]方法或者[onChangeSubscriber]添加观察者，会在位置改变时触发
+ *
+ * @see RelativePositionComponent
  */
 open class PositionComponent : Component() {
 

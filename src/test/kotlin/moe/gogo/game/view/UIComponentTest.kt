@@ -24,7 +24,7 @@ class UIComponentTest : StringSpec() {
         "contain components"{
             val component = createContainer()
             component.positionComponent shouldNotBe null
-            component.absolutePositionComponent shouldNotBe null
+            component.relativePositionComponent shouldNotBe null
             component.treeComponent shouldNotBe null
             component.renderComponent shouldNotBe null
         }

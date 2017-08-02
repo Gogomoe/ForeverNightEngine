@@ -1,11 +1,10 @@
 package moe.gogo.game.view
 
-import moe.gogo.game.component.AbsolutePositionComponent
-import moe.gogo.game.component.AbsolutePositionComponentImpl
 import moe.gogo.game.component.ComponentContainer
 import moe.gogo.game.component.EmptyRenderComponent
 import moe.gogo.game.component.MouseEventComponent
 import moe.gogo.game.component.PositionComponent
+import moe.gogo.game.component.RelativePositionComponent
 import moe.gogo.game.component.RenderComponent
 import moe.gogo.game.component.ShapeComponent
 import moe.gogo.game.component.UITreeComponent
@@ -25,7 +24,7 @@ abstract class UIComponent : ComponentContainer() {
     init {
         set(UITreeComponent::class, UITreeComponent())
         set(PositionComponent::class, PositionComponent())
-        set(AbsolutePositionComponent::class, AbsolutePositionComponentImpl(this))
+        set(RelativePositionComponent::class, RelativePositionComponent(this))
         set(RenderComponent::class, EmptyRenderComponent())
     }
 
@@ -47,10 +46,10 @@ abstract class UIComponent : ComponentContainer() {
             position = position.setY(value)
         }
 
-    var absolutePosition: Point
-        get() = absolutePositionComponent.position
+    var relativePosition: Point
+        get() = relativePositionComponent.position
         set(value) {
-            absolutePositionComponent.position = value
+            relativePositionComponent.position = value
         }
 
     val parent: UIComponent?
@@ -64,8 +63,8 @@ abstract class UIComponent : ComponentContainer() {
     val positionComponent: PositionComponent
         get() = this[PositionComponent::class]
 
-    val absolutePositionComponent: AbsolutePositionComponent
-        get() = this[AbsolutePositionComponent::class]
+    val relativePositionComponent: RelativePositionComponent
+        get() = this[RelativePositionComponent::class]
 
     val treeComponent: UITreeComponent
         get() = this[UITreeComponent::class]

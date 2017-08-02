@@ -36,7 +36,7 @@ class DelegatedPropertyTest : StringSpec() {
             val v: Int = Gen.int().generate()
             val f = { v }
 
-            val delegate = ReadOnlyDelegate(f)
+            val delegate = f
             delegate() shouldBe f()
         }
 
