@@ -5,6 +5,9 @@ import moe.gogo.game.utils.Point
 
 /**
  * 矩形
+ * @param width 长
+ * @param height 宽
+ * @param position 矩形的中点
  */
 class Rect(val width: Int,
            val height: Int,
@@ -37,7 +40,16 @@ class Rect(val width: Int,
 
     override fun shiftTo(point: Point): Rect = Rect(width, height, point)
 
+    /**
+     * 半长和半宽
+     * @return 长的一半和宽的一半
+     */
     fun half(): Pair<Int, Int> = Pair(width / 2, height / 2)
+
+    /**
+     * 半长和半宽
+     * @return 长的一半和宽的一半
+     */
     fun halfFloat(): Pair<Float, Float> = Pair(width.toFloat() / 2, height.toFloat() / 2)
 
     operator fun component1(): Int = width

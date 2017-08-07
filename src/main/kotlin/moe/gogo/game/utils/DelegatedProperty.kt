@@ -1,25 +1,39 @@
 package moe.gogo.game.utils
 
-import kotlin.properties.ReadWriteProperty
-import kotlin.reflect.KProperty
-
-fun <R> lazyVar(lazy: () -> R) = object : ReadWriteProperty<Any?, R> {
-
-    private var value: R? = null
-
-    override fun getValue(thisRef: Any?, property: KProperty<*>): R {
-        if (value == null) {
-            value = lazy()
-        }
-        return value!!
-    }
-
-    override fun setValue(thisRef: Any?, property: KProperty<*>, value: R) {
-        this.value = value
-    }
-
-}
-
+/**
+ * 延迟初始化的类，通过[init]方法进行延迟初始化，未初始化时使用[orNull]
+ *
+ * 主要目的是解决初始化懒加载对象时，懒加载的逻辑混在一起，逻辑不清晰，如下面这个例子
+ *
+ * ```kotlin
+ * var s: Subscriber?
+ * fun emit() {
+ *      e?.emit(event) // 若没有添加 listener 则不触发
+ * }
+ * fun addListener(listener) {
+ *      if (e == null) {
+ *          e = Subscriber()
+ *      }
+ *      e!!.subscribe(listener)
+ * }
+ * ```
+ *
+ * 使用[LazyProperty]代替，逻辑会更加清晰
+ *
+ * ```kotlin
+ * val s: LazyProperty<Subscriber> = LazyProperty { Subscriber() }
+ * fun emit() {
+ *      e.orNull().emit(event)
+ * }
+ * fun addListener(listener) {
+ *      s.init()
+ *      e().subscribe(listener)
+ * }
+ * ```
+ *
+ * 当然使用这个类也有多此一举的可能，例如上面这个例子，
+ * 不使用懒加载，或直接按第一种写法，也可以工作得很好
+ */
 class LazyProperty<R>(private val initializer: () -> R) {
 
     private var initialized = false
@@ -49,8 +63,14 @@ class LazyProperty<R>(private val initializer: () -> R) {
 
 }
 
+/**
+ * 主要是表达读取某个值（而不是创造一个值）语义更加明确
+ */
 typealias ReadOnlyDelegate<T> = () -> T
 
+/**
+ * 表达一个可以修改的值
+ */
 interface ReadWriteDelegate<T> {
     fun get(): T
     fun set(value: T)

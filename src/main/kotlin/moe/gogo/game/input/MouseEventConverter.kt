@@ -10,7 +10,7 @@ import moe.gogo.game.input.SimpleMouseEventType.ACTION
 
 /**
  * 简化的鼠标事件类型，
- * 将[PRESS]、[RELEASE]、[CLICK]等归类于[动作][ACTION]，
+ * 将[PRESS]、[RELEASE]、[CLICK]等归类于[动作][SimpleMouseEventType.ACTION]，
  * 将[ENTER]、[EXIT]、[MOVE]等归类于[移动][SimpleMouseEventType.MOVE]，
  */
 enum class SimpleMouseEventType {

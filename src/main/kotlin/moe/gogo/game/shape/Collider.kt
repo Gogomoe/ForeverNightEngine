@@ -3,12 +3,26 @@ package moe.gogo.game.shape
 import moe.gogo.game.utils.Vector
 import java.lang.Math.abs
 
+/**
+ * 碰撞器，用于检验两个指定类型的形状之间有无接触部分
+ *
+ * 实现碰撞器后，需要注册到[ColliderRegistry]才能作为默认碰撞器使用
+ */
 abstract class Collider<in T : Shape, in S : Shape> {
 
+    /**
+     * 检验两个形状有无接触
+     * @param t 第一个形状
+     * @param s 第二个形状
+     * @return 若两个形状接触，则返回true
+     */
     abstract fun contact(t: T, s: S): Boolean
 
 }
 
+/**
+ * 两个矩形之间的碰撞器
+ */
 class RectCollider : Collider<Rect, Rect>() {
 
     override fun contact(t: Rect, s: Rect): Boolean = RectCollider.contact(t, s)
@@ -27,6 +41,9 @@ class RectCollider : Collider<Rect, Rect>() {
 
 }
 
+/**
+ * 两个圆之间的碰撞器
+ */
 class CircleCollider : Collider<Circle, Circle>() {
 
     override fun contact(t: Circle, s: Circle): Boolean = CircleCollider.contact(t, s)
@@ -39,6 +56,9 @@ class CircleCollider : Collider<Circle, Circle>() {
     }
 }
 
+/**
+ * 矩形与圆的碰撞器
+ */
 class RectCircleCollider : Collider<Rect, Circle>() {
 
     override fun contact(t: Rect, s: Circle): Boolean = RectCircleCollider.contact(t, s)
@@ -58,7 +78,9 @@ class RectCircleCollider : Collider<Rect, Circle>() {
     }
 }
 
-
+/**
+ * 圆与矩形的碰撞器
+ */
 class CircleRectCollider : Collider<Circle, Rect>() {
 
     override fun contact(t: Circle, s: Rect): Boolean = CircleRectCollider.contact(t, s)

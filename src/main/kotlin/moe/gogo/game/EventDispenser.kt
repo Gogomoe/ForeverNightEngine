@@ -16,9 +16,6 @@ class EventDispenser {
         getOrCreateObserversByClass(type).add(observer)
     }
 
-    fun <E : Any> subscribe(type: KClass<E>, observer: (E) -> Unit): Observer<E>
-            = subscribe(type, Observer(observer))
-
     inline fun <reified E : Any> subscribe(noinline observer: (E) -> Unit): Observer<E>
             = subscribe(E::class, observer)
 
@@ -82,7 +79,7 @@ class EventDispenser {
         getObserversByClass(type)?.remove(observer)
     }
 
-    inline fun <reified E : Any> removeSubscriber(observer: Observer<E>) = removeSubscriber(E::class, observer)
+    inline fun <reified E : Any> removeSubscriber(noinline observer: Observer<E>) = removeSubscriber(E::class, observer)
 
 
 }

@@ -31,6 +31,8 @@ fun Graphics2D.antialias() {
 
 /**
  * 构建指定大小的图片
+ * @param rect 图片的大小
+ * @return 指定大小的图片
  */
 fun buildImage(rect: Rect): BufferedImage {
     with(rect) {
@@ -40,13 +42,27 @@ fun buildImage(rect: Rect): BufferedImage {
 
 /**
  * 通过16进制的字符串创建Color
+ *
+ * 若颜色前有个"#"号，则会忽略
+ *
+ * 只支持3位或6位的颜色代码，例如
+ * parseColor("a37") == parseColor("aa3377")
+ * parseColor("#ffffff") == Color.white
+ *
+ * @param 16进制的颜色代码
+ * @return 颜色
+ * @throws IllegalArgumentException 颜色位数错误
  */
 fun parseColor(str: String): Color {
-    val code = when (str.length) {
+    var code = str
+    if (code.startsWith("#")) {
+        code = code.substring(1)
+    }
+    code = when (code.length) {
         3 -> {
-            String(charArrayOf(str[0], str[0], str[1], str[1], str[2], str[2]))
+            String(charArrayOf(code[0], code[0], code[1], code[1], code[2], code[2]))
         }
-        6 -> str
+        6 -> code
         else -> throw IllegalArgumentException("$str is'nt color code")
     }
     return Color(code.toInt(16))

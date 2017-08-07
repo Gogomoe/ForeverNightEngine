@@ -15,17 +15,45 @@ import java.awt.Graphics2D
 import java.awt.image.BufferedImage
 
 /**
- * 用于添加[UI组件][UIComponent]的Layer
+ * 用于添加[UI组件][UIComponent]的Layer，可以在此Layer上添加[UI组件][UIComponent]
  *
  * 默认的[mouseEventHandler]实现方式是分发给UIComponent处理
+ * @see UIComponent
+ *
+ * @param scene 该层所在的场景
  */
 open class UILayer constructor(scene: Scene) : Layer(scene) {
 
     val components: MutableSet<UIComponent> = mutableSetOf()
 
+    /**
+     * 添加UI组件
+     * @param component 需要被添加的UI组件
+     * @return true表示添加成功
+     */
     open fun add(component: UIComponent) = components.add(component)
+
+    /**
+     * 移除UI组件
+     * @param component 需要被移除的UI组件
+     * @return 被移除的UI组件
+     */
     open fun remove(component: UIComponent) = components.remove(component)
 
+    /**
+     * 添加UI组件，并执行后续操作的DSL，应该长这样
+     *
+     *```kotlin
+     * layer {
+     *      add(Text()) {
+     *          ...
+     *      }
+     * }
+     * ```
+     *
+     * @param component 被添加的UI组件
+     * @param call 后续操作
+     */
     open fun <T : UIComponent> add(component: T, call: T.() -> Unit) {
         add(component)
         call(component)

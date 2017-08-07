@@ -5,7 +5,6 @@ import moe.gogo.game.utils.Point
 
 /**
  * 鼠标事件拥有发生的[位置][position]和一个[类型][MouseEventType]
-
  */
 open class MouseEvent(val position: Point, val type: MouseEventType) : Event()
 

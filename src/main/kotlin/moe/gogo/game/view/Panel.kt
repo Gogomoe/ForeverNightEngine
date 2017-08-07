@@ -26,6 +26,8 @@ abstract class Panel : JPanel() {
 
     /**
      * 加载一个场景，使之显示在界面上
+     * @param scene 需要加载的场景
+     * @return 被加载的场景
      */
     abstract fun load(scene: Scene): Scene
 
@@ -57,7 +59,6 @@ class PanelImpl : Panel() {
 
     }
 
-
     override fun load(scene: Scene): Scene {
         this.scene = scene
         return scene
@@ -73,7 +74,7 @@ class PanelImpl : Panel() {
             g.antialias()
             /**
             TODO 这行需要改，渲染不应该放在这，
-            应该放在System里又一组线程定时渲染
+            应该放在System里用一组线程定时渲染
             然而现在System还没做,先将就一下
              */
             scene?.render(camera)

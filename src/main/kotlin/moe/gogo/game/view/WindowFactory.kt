@@ -10,6 +10,7 @@ abstract class WindowFactory {
 
     /**
      * 构建游戏窗体
+     * @return 构建的窗口
      */
     abstract fun build(): Window
 
@@ -22,6 +23,7 @@ abstract class WindowFactory {
 
     /**
      * 设置基本的窗体监听器，如关闭窗体的操作
+     * @param window 需要设置的窗口
      */
     open fun addWindowListener(window: Window) {
         window.defaultCloseOperation = JFrame.EXIT_ON_CLOSE

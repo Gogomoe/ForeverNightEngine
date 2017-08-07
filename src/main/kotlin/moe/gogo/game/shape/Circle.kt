@@ -5,6 +5,8 @@ import moe.gogo.game.utils.Point
 
 /**
  * 圆
+ * @param radius 圆的半径
+ * @param position 圆心的位置
  */
 class Circle(val radius: Int,
              override val position: Point = EMPTY_POINT) : Shape() {

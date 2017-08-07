@@ -4,6 +4,7 @@ import moe.gogo.game.Observer
 import moe.gogo.game.Subscriber
 import moe.gogo.game.utils.EMPTY_POINT
 import moe.gogo.game.utils.LazyProperty
+import moe.gogo.game.utils.MutativeValue
 import moe.gogo.game.utils.Point
 
 /**
@@ -24,7 +25,7 @@ open class PositionComponent : Component() {
     open var position: Point = EMPTY_POINT
         set(value) {
             if (value != position) {
-                onChangeSubscriber.orNull()?.emit(value)
+                onChangeSubscriber.orNull()?.emit(MutativeValue(field, value))
                 field = value
             }
         }
@@ -32,13 +33,15 @@ open class PositionComponent : Component() {
     /**
      * 位置改变时的订阅者
      */
-    var onChangeSubscriber: LazyProperty<Subscriber<Point>> = LazyProperty({ Subscriber<Point>() })
+    var onChangeSubscriber: LazyProperty<Subscriber<MutativeValue<Point>>> = LazyProperty({ Subscriber<MutativeValue<Point>>() })
         protected set
 
     /**
      * 观察位置变化信息
+     * @param callback 位置改变时的回调函数
+     * @return 注册的回调函数
      */
-    fun onChange(callback: (Point) -> Unit): Observer<Point> {
+    fun onChange(callback: Observer<MutativeValue<Point>>): Observer<MutativeValue<Point>> {
         onChangeSubscriber.init()
         return onChangeSubscriber().subscribe(callback)
     }

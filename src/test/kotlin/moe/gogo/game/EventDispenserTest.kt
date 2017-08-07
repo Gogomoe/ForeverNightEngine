@@ -17,21 +17,21 @@ class EventDispenserTest : StringSpec() {
         "receive events"{
             val (dispenser, status) = createEventDispenserAndStatus()
             dispenser.subscribe<String> { status.next(STRING_COUNT) }
-            dispenser.subscribe(Number::class) { status.next(NUMBEI_COUNT) }
-            dispenser.subscribe(Int::class, Observer { status.next(INT_COUNT) })
+            dispenser.subscribe(Number::class) { status.next(NUMBER_COUNT) }
+            dispenser.subscribe(Int::class, { status.next(INT_COUNT) })
 
             dispenser.emit(Gen.string().generate())
             dispenser.emit(Gen.string().generate())
             dispenser.emit(Gen.int().generate())
 
             status should has(STRING_COUNT, 2)
-            status should has(NUMBEI_COUNT)
+            status should has(NUMBER_COUNT)
             status should has(INT_COUNT)
         }
         "only observer of current class could receive events"{
             val (dispenser, status) = createEventDispenserAndStatus()
             dispenser.subscribe(Number::class) { status.next(5) }
-            dispenser.subscribe(Int::class, Observer { status.next(10) })
+            dispenser.subscribe(Int::class, { status.next(10) })
 
             dispenser.emitOnlyCurrentClass(Gen.int().generate())
 
@@ -50,7 +50,7 @@ class EventDispenserTest : StringSpec() {
         }
         "remove subscriber"{
             val (dispenser, status) = createEventDispenserAndStatus()
-            var observer: Observer<String> = Observer { }
+            var observer: Observer<String> = { }
             observer = dispenser.subscribe {
                 status.next()
                 if (status.value == 5) {
@@ -67,7 +67,7 @@ class EventDispenserTest : StringSpec() {
     private fun createEventDispenserAndStatus() = Pair(EventDispenser(), TestStatus())
     private fun createEventDispenser() = EventDispenser()
 
-    val NUMBEI_COUNT = "number"
+    val NUMBER_COUNT = "number"
     val INT_COUNT = "int"
     val STRING_COUNT = "string"
 }

@@ -3,7 +3,9 @@ package moe.gogo.game.view
 import moe.gogo.game.input.MouseEvent
 import moe.gogo.game.input.MouseEventHandler
 import moe.gogo.game.utils.EMPTY_IMAGE
+import moe.gogo.game.utils.antialias
 import moe.gogo.game.utils.buildImage
+import moe.gogo.game.utils.draw
 import java.awt.Graphics2D
 import java.awt.image.BufferedImage
 
@@ -26,8 +28,10 @@ open class BaseScene : Scene() {
 
     override fun render(camera: Camera) {
         val image: BufferedImage = buildImage(camera.screenRange)
-        val graphics: Graphics2D = image.createGraphics()
-        drawImage(camera, graphics)
+        image.draw {
+            it.antialias()
+            drawImage(camera, it)
+        }
         this.image = image
     }
 
@@ -40,7 +44,7 @@ open class BaseScene : Scene() {
 
     override var image: BufferedImage = EMPTY_IMAGE
 
-    // 层的顺序为侧从顶开层始
+    // 接收鼠标事件的顺序为从顶层开始
     override val mouseEventHandler: MouseEventHandler = SceneMouseEventHandler({ this.layers.reversed() })
 
     private class SceneMouseEventHandler(val layers: () -> List<Layer>) : MouseEventHandler {

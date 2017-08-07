@@ -30,7 +30,7 @@ class SubscriberTest : StringSpec() {
         }
         "remove subscriber"{
             val (subscriber, status) = createSubscriberAndStatus<String>()
-            var observer: Observer<String> = Observer { }
+            var observer: Observer<String> = { }
             observer = subscriber.subscribe {
                 status.next()
                 if (status.value == 5) {

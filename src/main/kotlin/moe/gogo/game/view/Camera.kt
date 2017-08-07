@@ -7,6 +7,8 @@ import moe.gogo.game.utils.Point
 
 /**
  * Camera 保存了屏幕大小以及需要绘制的游戏界面大小等信息
+ *
+ * [Scene]、[Layer]绘图时需要用到 Camera ,Camera 通常由[Panel]创建
  */
 abstract class Camera {
 

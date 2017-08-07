@@ -1,10 +1,10 @@
 package moe.gogo.game
 
+typealias Observer<T> = (T)->Unit
+
 class Subscriber<T> {
 
     private val observers: MutableSet<Observer<T>> = mutableSetOf()
-
-    fun subscribe(observer: (T) -> Unit): Observer<T> = subscribe(Observer(observer))
 
     fun subscribe(observer: Observer<T>): Observer<T> {
         observers.add(observer)

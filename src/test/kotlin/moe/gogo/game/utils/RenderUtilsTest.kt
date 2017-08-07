@@ -20,6 +20,7 @@ class RenderUtilsTest : StringSpec() {
         "build color"{
             parseColor("000000") shouldBe Color.black
             parseColor("fff") shouldBe Color.white
+            parseColor("#37a") shouldBe parseColor("37a")
             shouldThrow<IllegalArgumentException> {
                 parseColor("abcd")
             }

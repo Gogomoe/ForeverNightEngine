@@ -12,6 +12,9 @@ import moe.gogo.game.input.MouseEventType.RELEASE
  * 监听鼠标事件的组件，实现本组件的容器可以监听到鼠标[点击][CLICK]、[按下][PRESS]、[移动][MOVE]等事件
  *
  * 能点击的组件必然有一定的形状、因此依赖于[形状组件][ShapeComponent]
+ *
+ * @see MouseEvent
+ * @see ShapeComponent
  */
 abstract class MouseEventComponent : Component() {
 
@@ -22,6 +25,7 @@ abstract class MouseEventComponent : Component() {
 
     /**
      * 处理鼠标事件
+     * @param event 发生的鼠标事件
      */
     open fun handle(event: MouseEvent) {
         when (event.type) {

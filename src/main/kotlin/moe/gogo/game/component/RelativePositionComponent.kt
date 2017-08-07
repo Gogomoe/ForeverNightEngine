@@ -12,6 +12,7 @@ import moe.gogo.game.view.UIComponent
  * 因此可以通过RelativePositionComponent操作Entity的相对位置
  *
  * 当Entity没有父容器时，RelativePosition等同于Position，
+ *
  * 修改Entity的相对位置，也会改变它的绝对位置
  *
  * @see PositionComponent
