@@ -7,7 +7,8 @@ before_install:
   - chmod +x gradlew
 
 script:
-  - ./gradlew build --info
+  - ./gradlew assemble
+  - ./gradlew test
 
 after_success:
   - ./gradlew jacocoTestReport coveralls
