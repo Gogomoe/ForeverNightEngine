@@ -32,22 +32,20 @@ open class Text constructor(var text: String = DEFAULT_TEXT,
                             var font: Font = DEFAULT_FONT,
                             var color: Color = DEFAULT_COLOR) : UIComponent() {
 
-    open val render: TextRender = TextRender(this)
     open val shape: Rect
         get() = get<ShapeComponent>().shape as Rect
 
     init {
+        val render = TextRender()
         set<RenderComponent>(render)
-        set<ShapeComponent>(TextShapeComponent(this))
+        set<ShapeComponent>(TextShapeComponent(render))
     }
 
     /**
      * 文本渲染器，具有缓存的能力，仅当文本的[text]、[font]、[color]等外观发生改变时重新渲染，
      * 在渲染同时会计算文本大小
-     *
-     * @param text 渲染的文本对象
      */
-    open class TextRender(val text: Text) : RenderComponent() {
+    inner private class TextRender : RenderComponent() {
         private var strCache: String? = null
         private var fontCache: Font? = null
         private var colorCache: Color? = null
@@ -59,8 +57,8 @@ open class Text constructor(var text: String = DEFAULT_TEXT,
 
         override fun render(graphics: Graphics2D) {
             val image = renderImage()
-            val (x, y) = text.position.int()
-            val (w, h) = text.shape
+            val (x, y) = this@Text.position.int()
+            val (w, h) = this@Text.shape
             // 绘制时以 Position 为中心
             graphics.drawImage(image, x - w / 2, y - h / 2, null)
         }
@@ -77,8 +75,8 @@ open class Text constructor(var text: String = DEFAULT_TEXT,
 
         private fun computeTextSize() {
             EMPTY_IMAGE.draw { g ->
-                val metrics = g.getFontMetrics(text.font)
-                fontSize = Rect(metrics.stringWidth(text.text), metrics.height)
+                val metrics = g.getFontMetrics(this@Text.font)
+                fontSize = Rect(metrics.stringWidth(this@Text.text), metrics.height)
                 ascent = metrics.ascent
             }
         }
@@ -94,10 +92,10 @@ open class Text constructor(var text: String = DEFAULT_TEXT,
             val (w, h) = fontSize
             val image = BufferedImage(w, h, BufferedImage.TYPE_4BYTE_ABGR)
             image.draw { g ->
-                g.font = text.font
-                g.color = text.color
+                g.font = this@Text.font
+                g.color = this@Text.color
                 g.antialias()
-                g.drawString(text.text, 0, ascent)
+                g.drawString(this@Text.text, 0, ascent)
             }
             return image
         }
@@ -108,13 +106,13 @@ open class Text constructor(var text: String = DEFAULT_TEXT,
 
     }
 
-    private class TextShapeComponent(val text: Text) : ShapeComponent() {
+    inner private class TextShapeComponent(val render: TextRender) : ShapeComponent() {
         override val shape: Rect
             get() {
-                if (text.render.fontSize == EMPTY_RECT) {
-                    text.renderComponent.renderImage()
+                if (render.fontSize == EMPTY_RECT) {
+                    render.renderImage()
                 }
-                return text.render.fontSize.shiftTo(text.position)
+                return render.fontSize.shiftTo(this@Text.position)
             }
     }
 
